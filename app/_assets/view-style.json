@@ -1,0 +1,48 @@
+{
+  "container": {
+    "maxWidth": "100%",
+    "margin": "20px auto",
+    "padding": "20px",
+    "border": "1px solid #ccc",
+    "borderRadius": "10px",
+    "boxShadow": "0 4px 12px rgba(0,0,0,0.1)",
+    "fontFamily": "’Segoe UI’, Tahoma, Geneva, Verdana, sans-serif",
+    "backgroundColor": "#fefefe",
+    "color": "#333"
+  },
+  "section": {
+    "marginBottom": "20px"
+  },
+  "heading": {
+    "borderBottom": "2px solid #0078D4",
+    "paddingBottom": "5px",
+    "color": "#0078D4"
+  },
+  "list": {
+    "listStyle": "none",
+    "padding": "0",
+    "margin": "10px 0"
+  },
+  "listItem": {
+    "marginBottom": "8px"
+  },
+  "table": {
+    "width": "100%",
+    "marginTop": "10px"
+  },
+  "th": {
+    "padding": "10px",
+    "backgroundColor": "#0078D4",
+    "color": "#fff"
+  },
+  "td": {
+    "padding": "10px",
+    "backgroundColor": "#f9f9f9"
+  },
+  "paid": {
+    "padding": "10px",
+    "backgroundColor": "#f9f9f9",
+    "color": "#28a745",
+    "fontWeight": "bold"
+  }
+}
