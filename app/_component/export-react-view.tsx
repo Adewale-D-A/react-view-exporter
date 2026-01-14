@@ -1,53 +1,70 @@
 "use client";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import ExportableView from "./view";
 
 // MAIN component that renders UI and contains actionable function for the export feature
 export default function RenderExportView() {
   const receiptRef = useRef<any>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   // On click, triggering this function, a JPEG file should be downloaded onto the user's device with a filer name "PAYMENT RECEIPT -001"
-  const exportEReceipt = () => {
+  const exportEReceipt = async () => {
     try {
+      setIsLoading(true);
       const node = receiptRef.current;
       if (node) {
-        // const svg = canvas.outerHTML;
-        const width = node.offsetWidth;
-        const height = node.offsetHeight;
-        const svg = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">
-          <foreignObject width="100%" height="100%">
-            ${new XMLSerializer().serializeToString(node)}
-          </foreignObject>
-        </svg>
-      `;
-        const img = new Image();
-
-        const svgBlob = new Blob([svg], {
-          type: "image/svg+xml;charset=utf-8",
+        const htmlContentString = node.outerHTML;
+        const response = await fetch("/api/html-to-jpeg", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ html_content: htmlContentString }),
         });
-        const svgObjectUrl = URL.createObjectURL(svgBlob);
-        img.onload = () => {
-          const canvas = document.createElement("canvas");
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext("2d");
-          ctx?.drawImage(img, 0, 0);
-          URL.revokeObjectURL(svgObjectUrl);
+        const result = await response.json();
+        const dataBuffer = result?.data?.img_buffer;
+        const pdfData = result?.data?.pdf_data;
 
-          const link = document.createElement("a");
-          link.download = "PAYMENT-RECEIPT";
-          try {
-            link.href = canvas.toDataURL("image/png");
-          } catch (error) {
-            console.log("did not word", error);
-          }
-          link.click();
+        var binaryString = String.fromCharCode.apply(null, dataBuffer.data);
+        var base64String = btoa(binaryString);
+        var imageUrl = "data:image/png;base64," + base64String;
+
+        // Convert to Uint8Array
+        const byteArray = Object.values(pdfData) as number[];
+        const blob = new Blob([new Uint8Array(byteArray)], {
+          type: "application/pdf",
+        });
+        const blobURL = URL.createObjectURL(blob);
+
+        const downloadableItems = [
+          {
+            fileName: "PAYMENT-RECEIPT.pdf",
+            fileUrl: blobURL,
+          },
+          {
+            fileName: "PAYMENT-RECEIPT.png",
+            fileUrl: imageUrl,
+          },
+        ];
+        const downloadFileWithAnchor = (filename: string, url: string) => {
+          const anchor = document.createElement("a");
+          anchor.href = url;
+          anchor.download = filename;
+          document.body.appendChild(anchor);
+          anchor.click();
+          document.body.removeChild(anchor);
         };
-        img.crossOrigin = "anonymous"; // Must be set before setting the src
-        img.src = svgObjectUrl;
+        for (var n = 0; n < downloadableItems.length; n++) {
+          const download = downloadableItems[n];
+          setTimeout(function () {
+            downloadFileWithAnchor(download.fileName, download.fileUrl);
+          }, 200 * (n + 1));
+        }
       }
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -62,7 +79,7 @@ export default function RenderExportView() {
           onClick={() => exportEReceipt()}
           className=" bg-blue-500 hover:bg-blue-700 transition-all px-5 rounded-lg py-2 text-white cursor-pointer"
         >
-          Export to JPEG
+          {isLoading ? "...loading" : "Export to JPEG"}
         </button>
       </div>
     </div>
