@@ -56,9 +56,12 @@ export default function RenderExportView() {
         };
         for (var n = 0; n < downloadableItems.length; n++) {
           const download = downloadableItems[n];
-          setTimeout(function () {
-            downloadFileWithAnchor(download.fileName, download.fileUrl);
-          }, 200 * (n + 1));
+          setTimeout(
+            function () {
+              downloadFileWithAnchor(download.fileName, download.fileUrl);
+            },
+            200 * (n + 1),
+          );
         }
       }
     } catch (error) {
@@ -69,9 +72,7 @@ export default function RenderExportView() {
 
   return (
     <div className=" space-y-5 w-full">
-      <h2 className=" text-center font-bold text-2xl">
-        TV Subscription Receipt
-      </h2>
+      <h2 className=" text-center font-bold text-2xl">Sample Receipt</h2>
       <ExportableView ref={receiptRef} />
       <div className=" flex justify-end w-full">
         <button
@@ -79,7 +80,7 @@ export default function RenderExportView() {
           onClick={() => exportEReceipt()}
           className=" bg-blue-500 hover:bg-blue-700 transition-all px-5 rounded-lg py-2 text-white cursor-pointer"
         >
-          {isLoading ? "...loading" : "Export to JPEG"}
+          {isLoading ? "...loading" : "Export to IMG & PDF"}
         </button>
       </div>
     </div>

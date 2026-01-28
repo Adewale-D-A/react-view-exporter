@@ -1,25 +1,33 @@
-# React View to JPEG & PDF Via Backend Service
+# React View Exporter to PNG and PDF
 
-### <b>prerequisite</b>:
+This project provides a reusable server and client logic built with Next.js, and TypeScript. The intent of this project is to provide a way of exporting a view (i.e. receipt) fromt the client to a downloadable PNG and/or PDF file for offline use. The reason for server addition arose when the initial client implementation failed in Safari browser making it unreliable which brought about another approach from with help from the server using Puppetteer. The entire logic both for the client and server is in this repository for manipulation to suite the developer's needs.
 
-> TailwindCSS(CSS styling), Node API (for backend view converter), NextJs (View Renderer). Therefore, technical knowledge of these tools are required to collaborate on this project in TypeScript.
+## Prerequisites
 
- <table>
-    <tr>
-      <th>Package Name</th>
-      <th>Use In App</th>
-    </tr>
-    <tr>
-      <td>tailwindcss</td>
-      <td>CSS styling library</td>
-    </tr>
-    <tr>
-      <td>puppeteer</td>
-      <td>Node.js library that provides a high level API control over a Chromium/Chrome browser used in this project for web screeshots</td>
-    </tr>  
-  </table>
+The following tools are required to run and maintain this project:
 
-step 1:
-run **npm install** (to install all the dependencies)
-step 2:
-run **npm run dev** (start application on port:3000)
+| Package    | Purpose                                                   |
+| ---------- | --------------------------------------------------------- |
+| Next.js    | Application framework                                     |
+| TypeScript | Static typing                                             |
+| Pupetter   | Server library for remote access to chrome browser engine |
+
+A working knowledge of these tools is required for collaboration.
+
+---
+
+## Local Development Setup
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Startup the application:
+
+```bash
+npm run dev
+```
+
+> The application will run on http://localhost:3000
